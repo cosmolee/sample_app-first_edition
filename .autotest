@@ -16,4 +16,9 @@ Autotest::Growl::sticky_failure_notifications = true
 
 require 'autotest/inotify'
 
-
+#Listing 5.17 - add integration tests
+Autotest.add_hook :initialize do |autotest|
+  autotest.add_mapping(%r%^spec/(requests)/.*rb$%) do|filename, _|
+    filename
+  end
+end 

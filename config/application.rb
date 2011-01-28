@@ -49,4 +49,3 @@ module SampleApp
   end
 end
 
-
