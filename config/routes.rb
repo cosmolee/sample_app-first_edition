@@ -1,5 +1,9 @@
 SampleApp::Application.routes.draw do
-  get "users/new"
+
+  #REST route
+  resources :users
+# Don't need this with REST route:  get "users/new"
+
   match '/signup', :to => 'users#new'
 
   match '/contact', :to => 'pages#contact'
