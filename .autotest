@@ -22,3 +22,8 @@ Autotest.add_hook :initialize do |autotest|
     filename
   end
 end 
+
+
+# 5/24/11: to have Autotest ignore certain files or directories
+# See: http://ph7spot.com/musings/getting-started-with-autotest
+# DIDN"T WORK FOR ME...

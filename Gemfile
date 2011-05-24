@@ -32,7 +32,7 @@ group :test do
   gem 'autotest-rails-pure', '4.1.2'	
   #required by autotest to detect file changes when running outside of ZenTest (We're not using ZenTest). The 'autotest' gem alone does not suffice.
 
-  gem 'autotest-inotify', '0.0.4'
+  gem 'autotest-inotify', '0.0.5'  #Upgrading from 0.0.4 to 0.0.5 did not fix <ctrl-C> issue...
 
   gem 'ZenTest', '4.4.2'
   #We don't actually need ZenTest, but it is installed automatically as a dependency of autotest-inotify

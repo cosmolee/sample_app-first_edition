@@ -34,7 +34,7 @@ GEM
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
     autotest-growl (0.2.9)
-    autotest-inotify (0.0.4)
+    autotest-inotify (0.0.5)
       autotest (>= 4.2.4)
       rb-inotify
     autotest-rails-pure (4.1.2)
@@ -136,7 +136,7 @@ DEPENDENCIES
   annotate-models
   autotest (= 4.4.6)
   autotest-growl (= 0.2.9)
-  autotest-inotify (= 0.0.4)
+  autotest-inotify (= 0.0.5)
   autotest-rails-pure (= 4.1.2)
   factory_girl_rails
   faker
