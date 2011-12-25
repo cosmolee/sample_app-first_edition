@@ -66,6 +66,15 @@ describe UsersController do
       get :show, :id => @user
       response.should have_selector("h1>img", :class => "gravatar")
     end
+
+    it "should show the user's microposts" do
+      mp1 = Factory(:micropost, :user => @user, :content => "Foo bar")
+      mp2 = Factory(:micropost, :user => @user, :content => "Baz quux")
+      get :show, :id => @user
+      response.should have_selector("span.content", :content => mp1.content)
+      response.should have_selector("span.content", :content => mp2.content)
+    end
+
   end
 
 
@@ -231,8 +240,9 @@ describe UsersController do
     describe "as an admin user" do
       
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        #Originally admin was a local non-"@" variable, but I had to add "@" to make it available to the test to keep admin from deleting self. WHY?
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
 
       it "should destroy the user" do
@@ -245,6 +255,18 @@ describe UsersController do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
       end
+
+# 12/18/2011: This test passed, but I was still able to delete from the index screen!!!
+#See user_controller for details...
+
+        it "should not allow admin/user to delete own account" do
+          #puts "@admin.class.to_s: " + @admin.class.to_s  #debugging
+          #puts "@admin.id.to_s: " + @admin.id.to_s  #debugging
+          delete :destroy, :id => @admin 		#.id
+          response.should redirect_to(users_path)
+          flash[:error].should =~ /You may not delete yourself!/i
+        end
+
     end
   end
 
@@ -313,6 +335,23 @@ describe UsersController do
           response.should have_selector("li", :content => user.name)
         end
       end
+
+      describe "delete links" do
+        it "should not show Delete links for non-admin" do
+          get :index
+          @users[0..2].each do |user|
+            response.should_not have_selector("li", :content => "delete")
+          end
+        end
+
+        it "should show Delete links for admin" do
+          @user.toggle!(:admin) 
+          get :index
+          @users[0..2].each do |user|
+            response.should have_selector("li", :content => "delete")
+          end
+        end
+      end
       
       it "should paginate users" do
         get :index
@@ -323,6 +362,7 @@ describe UsersController do
       end
     end
   end
+
 
 
 end

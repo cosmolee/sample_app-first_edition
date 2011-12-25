@@ -6,8 +6,9 @@ SampleApp::Application.routes.draw do
   #REST route
 # Don't need this with REST route:  get "users/new"
   resources :users
-
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :microposts, :only => [:create, :destroy]
+
 
   match '/signup', :to => 'users#new'
   match '/signin',  :to => 'sessions#new'
