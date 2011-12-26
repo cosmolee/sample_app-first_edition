@@ -75,6 +75,15 @@ describe UsersController do
       response.should have_selector("span.content", :content => mp2.content)
     end
 
+    it "should not show other user's microposts" do
+      wrong_user = Factory(:user, :email => Factory.next(:email))
+      mp1 = Factory(:micropost, :user => wrong_user, :content => "Foo bar")
+      mp2 = Factory(:micropost, :user => wrong_user, :content => "Baz quux")
+      get :show, :id => @user
+      response.should_not have_selector("span.content", :content => mp1.content)
+      response.should_not have_selector("span.content", :content => mp2.content)
+    end
+
   end
 
 

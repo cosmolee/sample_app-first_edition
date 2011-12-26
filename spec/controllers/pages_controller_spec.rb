@@ -19,7 +19,24 @@ describe PagesController do
       response.should have_selector("title",
                         :content => @base_title + "Home")
     end
+
+# 12/25/11: I yanked this from the user_controller_spec.rb file.  Use to test that feed isn't showing delete link for non-current_user.
+# However, this exercize from 11.5 is out of sync from the book's content - we're not showing non-current_user posts yet, so we can't test 
+# for this, unless we rewrite the feed to include non-current_user posts.  But since we haven't developed the "follow" association yet,
+# it doesn't make sense here.  Otherwise, we'd just be feedina ALL posts, regardless of whether they were associated with the current_user
+# (following or followed, etc).
+#
+#    it "should not show other user's microposts" do
+#      wrong_user = Factory(:user, :email => Factory.next(:email))
+#      mp1 = Factory(:micropost, :user => wrong_user, :content => "Foo bar")
+#      mp2 = Factory(:micropost, :user => wrong_user, :content => "Baz quux")
+#      get :show, :id => @user
+#      response.should_not have_selector("span.content", :content => mp1.content)
+#      response.should_not have_selector("span.content", :content => mp2.content)
+#    end
+
   end
+
 
   describe "GET 'contact'" do
     it "should be successful" do
