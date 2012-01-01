@@ -3,11 +3,15 @@ SampleApp::Application.routes.draw do
 #Where did this line come from - prior to chap 9?  It seems out of place...  
 # get "sessions/new"
 
-  #REST route
-# Don't need this with REST route:  get "users/new"
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+
   resources :sessions, :only => [:new, :create, :destroy]
   resources :microposts, :only => [:create, :destroy]
+  resources :relationships, :only => [:create, :destroy]
 
 
   match '/signup', :to => 'users#new'

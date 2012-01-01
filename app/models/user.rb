@@ -1,21 +1,20 @@
-# == Schema Information
-# Schema version: 20111219052753
-#
-# Table name: users
-#
-#  id                 :integer         not null, primary key
-#  name               :string(255)
-#  email              :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  encrypted_password :string(255)
-#  salt               :string(255)
-#  admin              :boolean
-#
-
 class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
+
+
+  has_many :relationships, :foreign_key => "follower_id",
+                           :dependent => :destroy
+
+  has_many :following, :through => :relationships, :source => :followed
+
+
+  has_many :reverse_relationships, :foreign_key => "followed_id",
+                                   :class_name => "Relationship",
+                                   :dependent => :destroy
+  has_many :followers, :through => :reverse_relationships, :source => :follower
+
+
 
   has_many :microposts, :dependent => :destroy
 
@@ -62,6 +61,22 @@ class User < ActiveRecord::Base
     Micropost.where("user_id = ?", id)
   end
 
+  def following?(followed)
+    relationships.find_by_followed_id(followed)
+  end
+
+  def follow!(followed)
+    relationships.create!(:followed_id => followed.id)
+  end
+
+  def unfollow!(followed)
+    relationships.find_by_followed_id(followed).destroy
+  end
+
+  def feed
+    Micropost.from_users_followed_by(self)
+  end
+
 
   private
 
@@ -83,3 +98,18 @@ class User < ActiveRecord::Base
     end
 
 end
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#  admin              :boolean         default(FALSE)
+#
+

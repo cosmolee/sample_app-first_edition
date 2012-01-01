@@ -2,7 +2,9 @@
 
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.3'
+gem 'rails', '3.0.11'
+# 12/30/2011 - upgrading to 3.0.11, per new version of online book
+#gem 'rails', '3.0.3'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'gravatar_image_tag'
 gem 'will_paginate', '3.0.pre2'
@@ -10,15 +12,22 @@ gem 'heroku'
 gem 'taps'
 
 group :development do
-  gem 'rspec-rails', '2.3.0'
-  gem 'annotate-models'
+  gem 'rspec-rails', '2.6.1'
+# 12/30/2011 - upgrading to 2.6.1 per online book
+#  gem 'rspec-rails', '2.3.0'
+  gem 'annotate', '2.4.0'
+# 12/30/2011 I'm removing this - replaced by "annotate 2.4.0", per listing 6.4  
+#gem 'annotate-models'
   gem 'faker'
 end
 
 group :test do
-  gem 'rspec', '2.3.0'
+  gem 'rspec', '2.6.0'
+#Replacing w/ v 2.6.0, which is what rspec-rails 2.6.1 depends on.
+#  gem 'rspec', '2.3.0'
   gem 'webrat', '0.7.1'
-  gem 'spork', '0.8.4'
+  gem 'spork', '0.9.0.rc8'
+# per online book, 12/30/2011:  gem 'spork', '0.8.4'
   gem 'factory_girl_rails'
   gem 'ffi', '1.0.4'
   gem 'rb-inotify', '0.8.4'

@@ -9,16 +9,39 @@ describe PagesController do
   end
 
   describe "GET 'home'" do
-    it "should be successful" do
-      get 'home'
-      response.should be_success
-    end
+    describe "when not signed in" do
 
-    it "should have the right title" do
-      get 'home'
-      response.should have_selector("title",
-                        :content => @base_title + "Home")
+      before(:each) do
+        get :home
+      end
+    
+      it "should be successful" do
+        response.should be_success
+      end
+    
+      it "should have the right title" do
+        response.should have_selector("title",
+                                      :content => @base_title + "Home")
+      end
     end
+    
+    describe "when signed in" do
+      
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+        other_user = Factory(:user, :email => Factory.next(:email))
+        other_user.follow!(@user)
+      end
+      
+      it "should have the right follower/following counts" do
+        get :home
+        response.should have_selector("a", :href => following_user_path(@user),
+                                           :content => "0 following")
+        response.should have_selector("a", :href => followers_user_path(@user),
+                                           :content => "1 follower")
+      end
+    end
+  end
 
 # 12/25/11: I yanked this from the user_controller_spec.rb file.  Use to test that feed isn't showing delete link for non-current_user.
 # However, this exercize from 11.5 is out of sync from the book's content - we're not showing non-current_user posts yet, so we can't test 
@@ -35,7 +58,6 @@ describe PagesController do
 #      response.should_not have_selector("span.content", :content => mp2.content)
 #    end
 
-  end
 
 
   describe "GET 'contact'" do
